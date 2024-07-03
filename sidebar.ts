@@ -3,11 +3,6 @@ export const sidebar = [
     label: "Missal",
     items: [
       {
-        label: "Dia",
-        link: "/missal/dia",
-        badge: { text: "Variável" },
-      },
-      {
         label: "Ordo",
         link: "/missal/ordo",
 
@@ -29,10 +24,14 @@ export const sidebar = [
         autogenerate: { directory: "missal/epifania" },
       },
       {
+        label: "Pre-Quaresma",
+        collapsed: true,
+        autogenerate: { directory: "missal/pre-quaresma" },
+      },
+      {
         label: "Quaresma",
         collapsed: true,
         autogenerate: { directory: "missal/quaresma" },
-        badge: { text: "Tempo presente" },
       },
       {
         label: "Páscoa",

@@ -12,3 +12,7 @@ node_modules/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+coverage
+bench/report.json
+
+src-tauri/gen/android/app/universal/release

@@ -1,7 +1,20 @@
-import { getViteConfig } from 'astro/config';
+import { defineConfig } from "vitest/config";
+import codspeedPlugin from "@codspeed/vitest-plugin";
 
-export default getViteConfig({
+export default defineConfig({
+  plugins: [codspeedPlugin()],
   test: {
-    watch: false
+    benchmark: {
+      outputFile: "bench/report.json",
+      reporters: "json",
+    },
+    watch: false,
+    coverage: {
+      provider: "v8",
+      include: ["src/lib/**/*"],
+      exclude: ["src/lib/resources"],
+      reporter: ["text", "json-summary", "json"],
+      all: true,
+    },
   },
 });

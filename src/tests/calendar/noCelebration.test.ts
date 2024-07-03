@@ -1,9 +1,9 @@
 import { expect, test } from "vitest";
-import { Calendar } from "../../lib/calendar";
+import { getCalendarDay } from "../../lib/getCalendar";
 
 test("no celebration when tempora", () => {
-  const calendar = new Calendar(2024);
-  expect(calendar.get("2024-01-08")).toMatchObject({
+  const calendar = getCalendarDay("2024-01-08");
+  expect(calendar).toMatchObject({
     date: "2024-01-08",
     celebration: [],
     commemoration: [],
@@ -12,9 +12,10 @@ test("no celebration when tempora", () => {
         colors: ["w"],
         date: "2024-01-08",
         flexibility: "tempora",
-        id: "tempora:Epi1-1:4:w",
-        name: "Epi1-1",
-        priority: 80,
+        id: "tempora:epi1-1:4:w",
+        name: "epi1-1",
+        link: "missal/epifania/epi1-0",
+        priority: 79,
         rank: 4,
         title: "Segunda-feira da semana após a Epifania",
         weekday: 1,

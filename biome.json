@@ -1,7 +1,7 @@
 {
   "files": {
-    "include": ["playwright-tests/**"],
-    "ignore": ["dist/**", "src/lib/resources/**"]
+    "include": ["playwright-tests/**", "src/**"],
+    "ignore": ["dist/**", "src/lib/resources/**", "src-tauri"]
   },
   "organizeImports": {
     "enabled": true
@@ -9,7 +9,10 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true
+      "recommended": true,
+      "style": {
+        "noParameterAssign": "off"
+      }
     }
   },
   "formatter": {

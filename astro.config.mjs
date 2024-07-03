@@ -4,22 +4,20 @@ import tailwind from "@astrojs/tailwind";
 import { sidebar } from "./sidebar.ts";
 import { rehypeHeadingIds } from "@astrojs/markdown-remark";
 import react from "@astrojs/react";
-const site = "https://tesourofieis.com";
 import sitemap from "@astrojs/sitemap";
-import Icons from "unplugin-icons/vite";
 import partytown from "@astrojs/partytown";
-
 import robotsTxt from "astro-robots-txt";
+const site = "https://tesourofieis.com";
 
 // https://astro.build/config
 export default defineConfig({
   site: site,
+  experimental: {
+    contentCollectionCache: true,
+  },
   integrations: [
     starlight({
       title: "Tesouro dos Fiéis",
-      components: {
-        Head: "./src/components/Head.astro",
-      },
       head: [
         {
           tag: "meta",
@@ -153,8 +151,9 @@ export default defineConfig({
         src: "./src/assets/favicon.svg",
       },
       social: {
+        email: "mailto:info@tesourofieis.com",
         "x.com": "https://x.com/tesourofieis",
-        github: "https://github.com/tesourofieis/tesourofieis",
+        github: "https://github.com/tesourofieis",
         patreon: "https://www.patreon.com/tesourofieis",
       },
       sidebar: sidebar,
@@ -179,14 +178,9 @@ export default defineConfig({
     watch: false,
   },
   vite: {
-    plugins: [Icons({ compiler: "astro" })],
     server: {
       watch: {
-        ignored: [
-          "**/src/lib/resources/divinum-officium/**",
-          "!**/src/lib/resources/divinum-officium/web/www/missa/Portugues/**",
-          "!**/src/lib/resources/divinum-officium/web/www/missa/Latin/**",
-        ],
+        ignored: ["**/src-tauri/**"],
       },
     },
   },

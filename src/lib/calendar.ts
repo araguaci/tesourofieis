@@ -1,11 +1,11 @@
-import { Day } from "./day.ts";
+import { Day, Observance } from "./day.ts";
 import { yyyyMMDD } from "./utils.ts";
 
 import {
   ADVENT,
   EMBER_DAYS_SEPTEMBER,
   FROM_PRE_LENT_TO_POST_PENTECOST,
-  NATIVITY_OCTAVE_FERIA,
+  LOCAL,
   NATIVITY_OCTAVE_SUNDAY,
   POST_EPIPHANY,
   SANCTI,
@@ -13,7 +13,6 @@ import {
   TEMPORA_NAT2_0,
   WEEK_24_AFTER_PENTECOST,
 } from "./constants.ts";
-import { Observance } from "./observance.ts";
 import { rules } from "./rules.ts";
 
 import { UTCDate } from "@date-fns/utc";
@@ -110,24 +109,6 @@ class Calendar {
     if (christmasOctaveSunday) {
       this.insertBlock(christmasOctaveSunday, NATIVITY_OCTAVE_SUNDAY);
     }
-    this.insertBlock(
-      new UTCDate(this.year, 11, 29),
-      NATIVITY_OCTAVE_FERIA,
-      false,
-      false,
-    );
-    this.insertBlock(
-      new UTCDate(this.year, 11, 30),
-      NATIVITY_OCTAVE_FERIA,
-      false,
-      false,
-    );
-    this.insertBlock(
-      new UTCDate(this.year, 11, 31),
-      NATIVITY_OCTAVE_FERIA,
-      false,
-      false,
-    );
   }
 
   private insertBlock(
@@ -174,12 +155,19 @@ class Calendar {
   private fillInSanctiDays() {
     for (const [date] of this.container.entries()) {
       const dateId = format(date, "MM-dd");
-      const days = SANCTI.filter((ii) => ii.startsWith(`sancti:${dateId}`)).map(
+      const days = SANCTI.filter((ii) => ii.startsWith(`santos:${dateId}`)).map(
         (ii) => new Observance(ii, date),
       );
 
       this.container.get(date)?.celebration.push(...days);
-      this.container.get(date)?.celebration.reverse();
+
+      const local = LOCAL.filter((ii) => ii.startsWith(`santos:${dateId}`)).map(
+        (ii) => new Observance(ii, date),
+      );
+
+      if (local.length) {
+        this.container.get(date)?.local.push(...local);
+      }
     }
   }
 
@@ -211,10 +199,12 @@ class Calendar {
 
   private applyRules(date: string, shifted: Observance[]) {
     for (const rule of rules) {
-      const results = rule(this, date, this.container.get(date)?.tempora, [
-        ...this.container.get(date).celebration,
-        ...shifted,
-      ]);
+      const results = rule(
+        this,
+        date,
+        this.container.get(date)?.tempora,
+        this.container.get(date).celebration.concat(shifted),
+      );
 
       if (results) {
         return results;
